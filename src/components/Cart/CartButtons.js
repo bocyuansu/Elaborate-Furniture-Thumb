@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { closeSidebar } from '../../features/product/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { closeSidebar } from '../../features/product/productSlice';
 import { calculateCartTotals } from '../../features/cart/cartSlice';
 import { setUser, signIn, signOut } from '../../features/oauth/oauthSlice';
 import jwt_decode from 'jwt-decode';
-
-const CLIENT_ID =
-  '1090328410694-p7uj36nish7agt93po8fc1eqs95jknub.apps.googleusercontent.com';
 
 const CartButtons = () => {
   const dispatch = useDispatch();
   const { cart, total_items } = useSelector((store) => store.cart);
   const { isLogin } = useSelector((store) => store.oauth);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // 點選登入會執行此函式
   function handleCallbackResponse(response) {
@@ -30,58 +27,56 @@ const CartButtons = () => {
     // console.log(userObject);
   }
 
+  // 登出時執行
   function handleSignOut() {
     dispatch(setUser({}));
     dispatch(signOut());
     document.getElementById('signInDiv').hidden = false;
-    history.push('/');
+    navigate('/');
 
     localStorage.removeItem('googleOAuthJWT');
   }
 
   // 載入 google OAuth
   useEffect(() => {
-    // 計時器
-    const timer = setTimeout(() => {
-      // global google
-      const google = window.google;
+    // 載入完成才執行 (否則會出錯)
+    if (window.google) {
+      // 如果登入按鈕未渲染
+      if (document.getElementById('signInDiv').children.length === 0) {
+        const google = window.google;
+  
+        google.accounts.id.initialize({
+          client_id: process.env.REACT_APP_AUTH_CLIENT_ID,
+          callback: handleCallbackResponse,
+          auto_select: false,
+        });
+    
+        google.accounts.id.renderButton(document.getElementById('signInDiv'), {
+          theme: 'outline',
+          size: 'large',
+          type: 'standard',
+        });
 
-      google.accounts.id.initialize({
-        client_id: CLIENT_ID,
-        callback: handleCallbackResponse,
-        auto_select: false,
-      });
+        // google.accounts.id.prompt();
+      }
+    }
+  });
 
-      google.accounts.id.renderButton(document.getElementById('signInDiv'), {
-        theme: 'outline',
-        size: 'large',
-        type: 'standard',
-      });
-    }, 500);
-
-    // google.accounts.id.prompt();
-
-    return () => {
-      clearTimeout(timer);
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  // 購物車 商品數量
-  useEffect(() => {
-    dispatch(calculateCartTotals());
-    // 把購物車商品存入 Local Storage
-    localStorage.setItem('cart', JSON.stringify(cart));
-    // eslint-disable-next-line
-  }, [cart]);
-
-  // // 判斷使用者是否已登入
+  // 判斷使用者是否已登入
   useEffect(() => {
     if (isLogin) {
       document.getElementById('signInDiv').hidden = true;
     }
     // eslint-disable-next-line
   }, []);
+
+  // 當 cart 發生變動時，計算商品數量 並 重新寫入localStorage
+  useEffect(() => {
+    dispatch(calculateCartTotals());
+    // 把購物車商品存入 Local Storage ，必須轉成 JSON 字串
+    localStorage.setItem('cart', JSON.stringify(cart));
+    // eslint-disable-next-line
+  }, [cart]);
 
   return (
     <Wrapper className={`cart-btn-wrapper ${isLogin ? 'loginWidth' : null}`}>

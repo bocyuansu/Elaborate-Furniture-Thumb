@@ -41,7 +41,6 @@ const Wrapper = styled.section`
     margin-top: 2rem;
   }
   .link-btn {
-    background: transparent;
     border-color: transparent;
     text-transform: capitalize;
     padding: 0.25rem 0.5rem;

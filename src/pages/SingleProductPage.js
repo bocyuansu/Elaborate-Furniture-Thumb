@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSingleProduct } from '../features/product/productSlice';
 import { descriptionText ,firebase_products_url } from '../utils/constants';
@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 const SingleProductPage = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     single_product_loading: loading,
@@ -33,7 +33,7 @@ const SingleProductPage = () => {
   useEffect(() => {
     if (error) {
       setTimeout(() => {
-        history.push('/');
+        navigate('/');
       }, 3000);
     }
     // eslint-disable-next-line
@@ -50,7 +50,6 @@ const SingleProductPage = () => {
   const {
     name,
     price,
-    description,
     stock,
     stars,
     reviews,
@@ -86,7 +85,7 @@ const SingleProductPage = () => {
               {company}
             </p>
             <hr />
-            {stock > 0 && <AddToCart product={product} />}
+            {stock > 0 && <AddToCart product={{...product, id}} />}
           </section>
         </div>
       </div>

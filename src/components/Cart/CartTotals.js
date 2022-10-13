@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { formatPrice } from '../../utils/helpers';
+// import { formatPrice } from '../../utils/helpers';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -32,9 +32,9 @@ const CartTotals = () => {
           <button
             type="button"
             className="btn"
-            onClick={() => window.google.accounts.id.prompt()}
+            onClick={() => window.scrollTo(0, 0)}
           >
-            登入
+            結帳前請先登入
           </button>
         )}
       </div>

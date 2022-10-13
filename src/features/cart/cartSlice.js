@@ -1,20 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const getLocalStorage = () => {
-  let cart = localStorage.getItem('cart');
-  if (cart) {
-    return JSON.parse(localStorage.getItem('cart'));
-  } else {
-    return [];
-  }
-};
-
-const initialState = {
-  cart: getLocalStorage(),
+let initialState = {
+  cart: [],
   total_items: 0,
   total_amount: 0,
-  shipping_fee: 534,
+  shipping_fee: 100,
 };
+
+// 判斷是否已有商品存在購物車
+let cart = localStorage.getItem('cart'); // null
+
+if (cart) {
+  cart = JSON.parse(localStorage.getItem('cart'));
+
+  const { total_items, total_amount } = cart.reduce((total, cartItem) => {
+    const { amount, price } = cartItem;
+    total.total_items += amount;
+    total.total_amount += price * amount;
+    return total;
+  }, {
+    total_items: 0,
+    total_amount: 0,
+  })
+
+  initialState = {
+    cart,
+    total_items,
+    total_amount,
+    shipping_fee: 100,
+  };
+}
 
 const cartSlice = createSlice({
   name: 'cart',

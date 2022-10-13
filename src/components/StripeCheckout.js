@@ -1,27 +1,152 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-// import { loadStripe } from '@stripe/stripe-js'
-// import {
-//   CardElement,
-//   useStripe,
-//   Elements,
-//   useElements,
-// } from '@stripe/react-stripe-js'
-// import axios from 'axios'
-// import { formatPrice } from '../utils/helpers'
-// import { useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { loadStripe } from '@stripe/stripe-js';
+import {
+  CardElement,
+  useStripe,
+  Elements,
+  useElements,
+} from '@stripe/react-stripe-js';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCart } from '../features/cart/cartSlice';
+
+const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const CheckoutForm = () => {
-  return <h4>hello from Stripe Checkout </h4>
-}
+  const dispatch = useDispatch();
+  const { cart, total_amount, shipping_fee } = useSelector(
+    (store) => store.cart
+  );
+  const { user } = useSelector((store) => store.oauth);
+  const navigate = useNavigate();
+  // STRIPE STUFF
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState('');
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const cardStyle = {
+    style: {
+      base: {
+        color: '#32325d',
+        fontFamily: 'Arial, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#32325d',
+        },
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a',
+      },
+    },
+  };
+
+  const createPaymentIntent = async () => {
+    try {
+      const { data } = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      );
+      setClientSecret(data.clientSecret);
+
+    } catch (e) {
+      console.log(e.response);
+    }
+  };
+
+  useEffect(() => {
+    createPaymentIntent();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleChange = async (e) => {
+    // 當 未輸入卡號 時，禁用付款按鈕
+    setDisabled(e.empty);
+    // 顯示 信用卡 的 錯誤訊息
+    setError(e.error ? e.error.message : '');
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // 開始處理付款
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret,{
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    })
+    
+    if (payload.error) {
+      setError(`付款失敗 ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      // 付款成功
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
+      setTimeout(() => {
+        dispatch(clearCart());
+        navigate('/');
+      }, 3000)
+    }
+  };
+
+  return (
+    <div>
+      {
+        succeeded ? 
+        <article>
+          <h4>付款成功！</h4>
+          <h4>將重新導向首頁</h4>
+        </article>
+        : <article>
+          <h4>Hello, {user && user.name}</h4>
+          <p>您的付款金額 $ {(shipping_fee + total_amount).toLocaleString()}</p>
+          <p>測試卡號：4242 4242 4242 4242</p>
+        </article>
+      }
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <CardElement
+          id="card-element"
+          options={cardStyle}
+          onChange={handleChange}
+        />
+        <button disabled={processing || disabled || succeeded} id="submit">
+          <span id="button-text">
+            {processing ? <div className="spinner" id="spinner"></div> : '付款'}
+          </span>
+        </button>
+        {/* 當付款發生錯誤時顯示錯誤訊息 */}
+        {error && (
+          <div className="card-error" role="alert">
+            {error}
+          </div>
+        )}
+        {/* 顯示付款成功的訊息 */}
+        <p className={succeeded ? 'result-message' : 'resule-message hidden'}>
+          付款成功
+        </p>
+      </form>
+    </div>
+  );
+};
 
 const StripeCheckout = () => {
   return (
     <Wrapper>
-      <CheckoutForm />
+      <Elements stripe={promise}>
+        <CheckoutForm />
+      </Elements>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.section`
   form {
@@ -161,6 +286,6 @@ const Wrapper = styled.section`
       width: 80vw;
     }
   }
-`
+`;
 
-export default StripeCheckout
+export default StripeCheckout;

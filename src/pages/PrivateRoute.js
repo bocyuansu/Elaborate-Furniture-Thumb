@@ -1,17 +1,11 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { isLogin } = useSelector((store) => store.oauth);
-  return (
-    <Route
-      {...rest}
-      render={() => {
-        return isLogin ? children : <Redirect to="/"></Redirect>;
-      }}
-    ></Route>
-  );
+
+  return isLogin ? children : <Navigate to="/" />;
 };
 
 export default PrivateRoute;
