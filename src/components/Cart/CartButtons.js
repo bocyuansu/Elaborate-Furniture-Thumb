@@ -12,6 +12,7 @@ const CartButtons = () => {
   const dispatch = useDispatch();
   const { cart, total_items } = useSelector((store) => store.cart);
   const { isLogin } = useSelector((store) => store.oauth);
+  const { isSidebarOpen } = useSelector((store) => store.products);
   const navigate = useNavigate();
 
   // 點選登入會執行此函式
@@ -52,9 +53,11 @@ const CartButtons = () => {
         });
     
         google.accounts.id.renderButton(document.getElementById('signInDiv'), {
-          theme: 'outline',
-          size: 'large',
           type: 'standard',
+          theme: 'filled_blue',
+          size: 'medium',
+          text: 'signin_with',
+          width: 200,
         });
 
         // google.accounts.id.prompt();
@@ -79,7 +82,7 @@ const CartButtons = () => {
   }, [cart]);
 
   return (
-    <Wrapper className={`cart-btn-wrapper ${isLogin ? 'loginWidth' : null}`}>
+    <Wrapper className={`cart-btn-wrapper ${isLogin ? 'loginWidth' : ''} ${isSidebarOpen ? 'd-none-cart d-show-cart' : 'd-none-cart'}`}>
       <Link
         to="/cart"
         className="cart-btn"
@@ -146,6 +149,7 @@ const Wrapper = styled.div`
     padding: 12px;
   }
   .auth-btn {
+    width: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,6 +162,12 @@ const Wrapper = styled.div`
 
     svg {
       margin-right: 0.5rem;
+    }
+  }
+  @media (max-width: 992px) {
+    .cart-btn {
+      justify-content: start;
+      margin-bottom: 40px;
     }
   }
 `;

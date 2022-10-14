@@ -32,9 +32,11 @@ const CartTotals = () => {
           <button
             type="button"
             className="btn"
-            onClick={() => window.scrollTo(0, 0)}
+            onClick={() => {
+              window.google.accounts.id.prompt();
+            }}
           >
-            結帳前請先登入
+            登入
           </button>
         )}
       </div>

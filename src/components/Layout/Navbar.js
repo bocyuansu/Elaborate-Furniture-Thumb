@@ -77,12 +77,25 @@ const NavContainer = styled.nav`
       font-size: 2rem;
     }
   }
+
   .nav-links {
     display: none;
   }
-  .cart-btn-wrapper {
-    display: none;
+
+  .d-none-cart {
+    display: block;
+    position: fixed;
+    top: 330px;
+    left: 23px;
+    transform: translate(-100%);
+    z-index: -1;
   }
+
+  .d-show-cart {
+    transform: translate(0);
+    z-index: 1000;
+  }
+
   @media (min-width: 992px) {
     .nav-toggle {
       display: none;
@@ -111,6 +124,11 @@ const NavContainer = styled.nav`
     }
     .cart-btn-wrapper {
       display: grid;
+    }
+    .d-none-cart {
+      position: static;
+      transform: none;
+      z-index: 1;
     }
   }
 `;
