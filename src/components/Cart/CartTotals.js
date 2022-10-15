@@ -21,7 +21,7 @@ const CartTotals = () => {
           <hr />
           <h4>
             訂單金額:
-            <span>$ {total_amount && (total_amount + shipping_fee).toLocaleString()}</span>
+            <span>$&nbsp;{total_amount && (total_amount + shipping_fee).toLocaleString()}</span>
           </h4>
         </article>
         {isLogin ? (

@@ -86,7 +86,7 @@ const CartButtons = () => {
       <Link
         to="/cart"
         className="cart-btn"
-        onClick={() => dispatch(closeSidebar)}
+        onClick={() => dispatch(closeSidebar())}
       >
         購物車
         <span className="cart-container">
