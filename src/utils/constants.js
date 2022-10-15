@@ -39,6 +39,6 @@ export const services = [
   },
 ];
 
-export const firebase_products_url = 'https://gold-furniture-thumb-default-rtdb.asia-southeast1.firebasedatabase.app/products';
+export const firebase_products_url = 'https://elaborate-furniture-thumb-default-rtdb.asia-southeast1.firebasedatabase.app/products';
 
 export const descriptionText = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati facere nulla vitae quidem non earum expedita veniam cum sit quis praesentium cumque odio, ipsam qui eligendi eius quo sequi voluptas. Quia sed exercitationem facere deleniti deserunt id aut, quidem laudantium incidunt sint reiciendis.';

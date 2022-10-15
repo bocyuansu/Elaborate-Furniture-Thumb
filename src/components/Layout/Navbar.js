@@ -17,7 +17,7 @@ const Nav = () => {
       <div className="nav-center">
         <div className="nav-header">
           <Link to="/">
-            <img src={logo} alt="comfy sloth" />
+            <h2>精傢讚</h2>
           </Link>
           <button
             type="button"
@@ -63,9 +63,9 @@ const NavContainer = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    img {
-      width: 175px;
+    h2 {
       margin-left: -15px;
+      color: var(--clr-primary-4);
     }
   }
   .nav-toggle {
