@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFilters, clearFilters } from '../features/filter/filterSlice';
-import { getUniqueValues, formatPrice } from '../utils/helpers';
+import { updateFilters, clearFilters } from '../../features/filter/filterSlice';
+import { getUniqueValues, formatPrice } from '../../utils/helpers';
 import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
@@ -178,7 +178,7 @@ const Filters = () => {
           {/* price */}
           <div className="form-control">
             <h5>price</h5>
-            <p className="price">{formatPrice(price)}</p>
+            <p className="price">$ {price && price.toLocaleString()}</p>
             <input
               type="range"
               name="price"

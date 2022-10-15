@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Error from '../Error';
 import Loading from '../Loading';
-import Product from './Product';
+import Product from '../Product/Product';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../features/product/productSlice';
-
 
 const FeaturedProducts = () => {
   // 取出 products_loading 重新命名為 loading

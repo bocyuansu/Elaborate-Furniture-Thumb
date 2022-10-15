@@ -107,7 +107,7 @@ const CheckoutForm = () => {
           <h4>將重新導向首頁</h4>
         </article>
         : <article>
-          <h4>Hello, {user && user.name}</h4>
+          <h4>您好，{user && user.name}</h4>
           <p>您的付款金額 $ {(shipping_fee + total_amount).toLocaleString()}</p>
           <p>測試卡號：4242 4242 4242 4242</p>
         </article>

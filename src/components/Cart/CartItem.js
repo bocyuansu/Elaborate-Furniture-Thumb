@@ -36,12 +36,12 @@ const CartItem = ({ id, image, name, color, price, amount }) => {
           <p className="color">
             顏色 : <span style={{ background: color }}></span>
           </p>
-          <h5 className="price-small">{price}</h5>
+          <h5 className="price-small">$ {price && price.toLocaleString()}</h5>
         </div>
       </div>
-      <h5 className="price">{price}</h5>
+      <h5 className="price">$ {price && price.toLocaleString()}</h5>
       <AmountButtons amount={amount} increase={increase} decrease={decrease} />
-      <h5 className="subtotal">{price * amount}</h5>
+      <h5 className="subtotal">$ {price && (price * amount).toLocaleString()}</h5>
       <button
         type="button"
         className="remove-btn"

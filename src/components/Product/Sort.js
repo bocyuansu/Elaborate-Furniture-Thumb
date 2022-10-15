@@ -6,7 +6,7 @@ import {
   setGridView,
   setListView,
   updateSort,
-} from '../features/filter/filterSlice';
+} from '../../features/filter/filterSlice';
 import { useDispatch } from 'react-redux';
 
 const Sort = () => {

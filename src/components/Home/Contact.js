@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <Wrapper>
       <div className="section-center">
-        <h3>Join our newsletter and get 20% off</h3>
+        <h3>訂閱我們，立即享受20%折扣</h3>
         <div className="content">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi natus
@@ -15,10 +15,10 @@ const Contact = () => {
             <input
               type="email"
               className="form-input"
-              placeholder="enter email"
+              placeholder="email"
             />
             <button type="submit" className="submit-btn">
-              subscribe
+              訂閱
             </button>
           </form>
         </div>

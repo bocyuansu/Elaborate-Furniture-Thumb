@@ -13,7 +13,7 @@ const CartTotals = () => {
       <div>
         <article>
           <h5>
-            小計 : <span>{total_amount}</span>
+            小計 : <span>$ {total_amount && total_amount.toLocaleString()}</span>
           </h5>
           <h5>
             運費 : <span>{shipping_fee}</span>
@@ -21,7 +21,7 @@ const CartTotals = () => {
           <hr />
           <h4>
             訂單金額:
-            <span>{total_amount + shipping_fee}</span>
+            <span>$ {total_amount && (total_amount + shipping_fee).toLocaleString()}</span>
           </h4>
         </article>
         {isLogin ? (
@@ -32,11 +32,9 @@ const CartTotals = () => {
           <button
             type="button"
             className="btn"
-            onClick={() => {
-              window.google.accounts.id.prompt();
-            }}
+            onClick={() => window.scrollTo(0,0)}
           >
-            登入
+            結帳前請先登入
           </button>
         )}
       </div>

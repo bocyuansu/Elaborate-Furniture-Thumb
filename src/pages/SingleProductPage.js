@@ -70,7 +70,7 @@ const SingleProductPage = () => {
           <section className="content">
             <h2>{name}</h2>
             <Stars stars={stars} reviews={reviews} />
-            <h5 className="price">{price}</h5>
+            <h5 className="price">$ {price && price.toLocaleString()}</h5>
             <p className="desc">{descriptionText}</p>
             <p className="info">
               <span>庫存：</span>

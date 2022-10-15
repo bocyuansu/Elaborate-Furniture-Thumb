@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa';
 import { links } from '../../utils/constants';
 import styled from 'styled-components';
-import CartButtons from '../Cart/CartButtons';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeSidebar } from '../../features/product/productSlice';
 
@@ -42,7 +41,7 @@ const Sidebar = () => {
           {isLogin && (
             <li>
               <Link to="/checkout" onClick={() => dispatch(closeSidebar())}>
-                CheckOut
+                結帳
               </Link>
             </li>
           )}

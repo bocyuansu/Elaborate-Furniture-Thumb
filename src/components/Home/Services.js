@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { services } from '../utils/constants';
+import { services } from '../../utils/constants';
 
 const Services = () => {
   return (
@@ -8,8 +8,8 @@ const Services = () => {
       <div className="section-center">
         <article className="header">
           <h3>
-            custom furniture <br />
-            built only for you
+            專門為您設計 <br />
+            獨一無二的客製化傢俱
           </h3>
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minus

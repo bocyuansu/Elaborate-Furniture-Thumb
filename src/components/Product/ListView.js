@@ -13,7 +13,7 @@ const ListView = ({ products }) => {
             <img src={image} alt={name} />
             <div>
               <h4>{name}</h4>
-              <h5 className="price">{price}</h5>
+              <h5 className="price">$ {price && price.toLocaleString()}</h5>
               <p>{descriptionText.substring(0,150)}...</p>
               <Link to={`/products/${id}`} className="btn">
                 詳細資訊
